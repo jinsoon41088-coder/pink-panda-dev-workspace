@@ -8,7 +8,7 @@ Windows 로컬 환경에서 PowerShell, Docker, Git을 사용해 개발 환경�
 
 | 항목 | 확인 결과 |
 |---|---|
-| OS | Windows 10 Home |
+| OS | Windows 11 Home 26H2 (Build 26300.10075) |
 | 쉘 | Windows PowerShell 5.1 |
 | Docker CLI | 29.9.2 |
 | Docker Server | 29.9.2 (`linux`) |
@@ -229,10 +229,22 @@ git status --short --branch
    - 원인: 빌드 경로 인수 누락.
    - 해결: 현재 폴더를 뜻하는 `.`을 포함해 `docker build -t workstation-web:2.0 .` 실행.
 
+
 ## 12. 증거 자료
 
-아래 스크린샷을 `screenshots/`에 저장한 뒤 링크를 확인한다.
+### Docker 컨테이너 실행 및 포트 매핑
 
-- [ ] Docker Desktop 엔진 상태: `screenshots/docker-engine.png`
-- [ ] 브라우저 주소창과 웹 페이지 응답(`localhost:8082`): `screenshots/web-8082.png`
-- [ ] VS Code의 GitHub 로그인 및 저장소 연결: `screenshots/vscode-github.png`
+- [x] Docker 컨테이너 실행 화면
+  ![Docker container running](../screenshots/docker-container-running.png)
+
+- [x] 웹브라우저 포트 매핑 접속 화면 (localhost:8084)
+  ![Docker web 8084](../screenshots/docker-web-8084.png)
+
+### 추가 증거 자료
+
+- [ ] Docker 엔진 실행 상태: `screenshots/docker-engine.png`
+- [ ] VS Code GitHub 로그인 및 저장소 연결: `screenshots/vscode-github.png`
+
+GitHub 저장소:
+https://github.com/jinsoon41088-coder/pink-panda-dev-workspace
+
