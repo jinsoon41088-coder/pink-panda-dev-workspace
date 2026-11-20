@@ -1,0 +1,6 @@
+cli-practice/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
