@@ -248,3 +248,14 @@ git status --short --branch
 GitHub 저장소:
 https://github.com/jinsoon41088-coder/pink-panda-dev-workspace
 
+### Docker 엔진 실행 환경 확인
+
+Docker Client와 Server 버전, 컨테이너 상태 및 실행 환경을 확인한 증거입니다.
+
+![Docker 엔진 정보 1](../screenshots/docker-engine-1.png)
+
+![Docker 엔진 정보 2](../screenshots/docker-engine-2.png)
+
+![Docker 엔진 정보 3](../screenshots/docker-engine-3.png)
+
+![Docker 엔진 정보 4](../screenshots/docker-engine-4.png)
