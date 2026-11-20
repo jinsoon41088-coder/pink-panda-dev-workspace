@@ -211,6 +211,14 @@ git status --short --branch
 ```
 
 `git config --list` 결과를 기록할 때는 개인 이름·이메일 등 식별 정보를 가린다. GitHub 저장소 URL과 VS Code 연동이 완료되면 이 섹션에 저장소 링크와 증거를 추가한다. 토큰·비밀번호·개인키는 문서나 스크린샷에 넣지 않는다.
+### Git 사용자 설정 확인
+
+- Git 사용자 이름: `pink_panda`
+- Git 사용자 이메일: 설정 완료 (개인정보 보호를 위해 비공개)
+- Git 기본 브랜치: `main`
+- GitHub 원격 저장소: 연결 완료
+- GitHub 브랜치 추적: `main` → `origin/main`
+- GitHub 업로드: 정상 완료
 
 ## 11. 트러블슈팅
 
