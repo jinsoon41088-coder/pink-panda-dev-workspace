@@ -57,3 +57,26 @@ Docker, Linux, Git, GitHub의 기본 개념을
 [🐼 핑크판다 Docker 웹페이지 코드 보기](web-demo/site/index.html)
 
 [🐳 Dockerfile 확인하기](web-demo/Dockerfile)
+## 📸 과제 수행 증거 사진
+
+### 1. Docker 컨테이너 실행
+
+![Docker 컨테이너 실행](screenshots/docker-container-running.png)
+
+### 2. Docker 웹서버 실행 및 포트 연결
+
+![Docker 웹서버 실행](screenshots/docker-web-8084.png)
+
+### 3. Docker 엔진 실행 환경
+
+![Docker 엔진 정보 1](screenshots/docker-engine-1.png)
+
+![Docker 엔진 정보 2](screenshots/docker-engine-2.png)
+
+![Docker 엔진 정보 3](screenshots/docker-engine-3.png)
+
+![Docker 엔진 정보 4](screenshots/docker-engine-4.png)
+
+### 4. VS Code GitHub 로그인 확인
+
+![VS Code GitHub 로그인](screenshots/vscode-github.png)

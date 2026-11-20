@@ -26,8 +26,8 @@ Windows 로컬 환경에서 PowerShell, Docker, Git을 사용해 개발 환경�
 - [x] 바인드 마운트 변경 반영 확인
 - [x] Docker 볼륨 데이터 영속성 확인
 - [x] Git 저장소 초기화 및 기본 브랜치 `main` 설정
-- [ ] GitHub 저장소 연결 및 VS Code 로그인 증거
-- [ ] README에 스크린샷 증거 추가
+- [x] GitHub 저장소 연결 및 VS Code 로그인 증거
+- [x] README에 스크린샷 증거 추가
 
 ## 4. PowerShell 기본 조작 로그
 
@@ -242,8 +242,10 @@ git status --short --branch
 
 ### 추가 증거 자료
 
-- [ ] Docker 엔진 실행 상태: `screenshots/docker-engine.png`
-- [ ] VS Code GitHub 로그인 및 저장소 연결: `screenshots/vscode-github.png`
+- [x] Docker 엔진 실행 상태: `screenshots/docker-engine-1.png` ~ `screenshots/docker-engine-4.png`
+- [x] VS Code GitHub 로그인 확인: `screenshots/vscode-github.png`
+
+![VS Code GitHub 로그인 증거](../screenshots/vscode-github.png)
 
 GitHub 저장소:
 https://github.com/jinsoon41088-coder/pink-panda-dev-workspace
