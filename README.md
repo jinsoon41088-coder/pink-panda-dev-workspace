@@ -49,4 +49,6 @@ Docker, Linux, Git, GitHub의 기본 개념을
 포기하지 않고 꾸준히 공부하겠습니다!
 
 🐼 Pink Panda Developer Workspace
-  
+  ## 📚 실습 보고서
+
+[🐼 개발자 작업실 실습 보고서 보기](docs/WORKSTATION.md)
