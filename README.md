@@ -12,19 +12,31 @@
 
 ## 💻 개발 환경
 
-- 운영체제: Windows 11
-- 개발 도구: Visual Studio Code
-- Linux 환경: WSL2 Ubuntu
-- 컨테이너: Docker
-- 버전 관리: Git
-- 원격 저장소: GitHub
+| 구분 | 사용 환경 및 버전 |
+|---|---|
+| 운영체제(OS) | Windows 11 |
+| 개발 도구 | Visual Studio Code |
+| 쉘(Shell) | Windows PowerShell |
+| 터미널 | VS Code 통합 터미널 |
+| Linux 환경 | WSL2 Ubuntu |
+| 컨테이너 환경 | Docker Desktop (Engine running 확인) |
+| Docker CLI 버전 | 29.9.3 (build 5457199) |
+| Git 버전 | 2.56.0.windows.4 |
+| 원격 저장소 | GitHub |
 
-## 🐼 주요 학습 내용
+### 실행 환경 검증 명령어
 
-### 1. Linux 기본 명령어
-- pwd, ls, cd 명령어 사용
-- 파일과 폴더 생성 및 이동
-- 파일 권한 이해하기
+```powershell
+docker --version
+git --version
+```
+
+실제 확인 결과:
+
+```text
+Docker version 29.9.3, build 5457199
+git version 2.56.0.windows.4
+```
 
 ### 2. Docker 실습
 - Docker 이미지 만들기
@@ -236,3 +248,137 @@ git push origin main
 동료평가 발표를 위해 개발자 작업실 미션의 6가지 학습 목표와 실습 내용을 웹페이지로 정리했습니다.
 
 👉 [핑크판다 미션 설명 웹페이지 바로가기](https://jinsoon41088-coder.github.io/pink-panda-dev-workspace/mission-guide.html)
+
+## ✅ 미션 수행 항목 체크리스트
+
+- [x] 터미널: PowerShell 및 Linux 기본 명령어 실습
+- [x] 파일 권한: r/w/x 이해 및 chmod 755, 644 실습
+- [x] Docker: 이미지 확인 및 컨테이너 실행
+- [x] Dockerfile: 커스텀 Docker 이미지 빌드
+- [x] 포트 매핑: 8084:80 설정 및 웹페이지 접속
+- [x] Docker 볼륨: 데이터 저장 및 유지 확인
+- [x] Git: 파일 추가, 커밋 및 변경 이력 관리
+- [x] GitHub: 원격 저장소 연결 및 push 완료
+
+### 📚 수행 결과 및 증빙 자료
+
+- [개발자 작업실 실습 보고서](docs/WORKSTATION.md)
+- [Dockerfile 확인](web-demo/Dockerfile)
+- [Docker 컨테이너 실행 사진](screenshots/docker-container-running.png)
+- [Docker 포트 매핑 확인 사진](screenshots/docker-web-8084.png)
+- [Docker 엔진 정보 사진](screenshots/docker-engine-1.png)
+- [VS Code GitHub 로그인 확인 사진](screenshots/vscode-github.png)
+- [핑크판다 미션 설명 웹페이지](https://jinsoon41088-coder.github.io/pink-panda-dev-workspace/mission-guide.html)
+
+## 🔍 미션 검증 방법 및 결과
+
+| 검증 항목 | 사용한 명령어 또는 방법 | 확인 결과 |
+|---|---|---|
+| Docker 버전 | `docker --version` | Docker 29.9.3 확인 |
+| Git 버전 | `git --version` | Git 2.56.0.windows.4 확인 |
+| Docker 컨테이너 | `docker ps` | 컨테이너 실행 화면 기록 |
+| Docker 이미지 | `docker images` | 커스텀 이미지 생성 실습 |
+| Docker 포트 매핑 | `docker run -d -p 8084:80 ...` | localhost:8084 접속 실습 |
+| Docker 볼륨 | `docker volume ls` | 볼륨 생성 및 데이터 유지 실습 |
+| Linux 파일 권한 | `chmod 755 hello.sh`, `chmod 644 hello.txt` | 권한 변경 실습 |
+| Git 상태 | `git status` | 변경 파일 및 커밋 상태 확인 |
+| GitHub 업로드 | `git push origin main` | main 브랜치 업로드 성공 |
+
+### 📸 검증 결과 확인 위치
+
+- [Docker 컨테이너 실행 증빙](screenshots/docker-container-running.png)
+- [Docker 포트 매핑 증빙](screenshots/docker-web-8084.png)
+- [Docker 엔진 정보](screenshots/docker-engine-1.png)
+- [GitHub 로그인 증빙](screenshots/vscode-github.png)
+- [상세 실습 보고서](docs/WORKSTATION.md)
+- [GitHub 저장소](https://github.com/jinsoon41088-coder/pink-panda-dev-workspace)
+
+## 🛠️ 트러블슈팅 기록
+
+### 1. Docker 명령어 인식 오류 해결
+
+**문제**
+
+PowerShell에서 `docker --version`을 실행했지만 다음 오류가 발생했습니다.
+
+```text
+docker : 'docker' 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로 인식되지 않습니다.
+```
+
+**원인 가설**
+
+Docker Desktop은 설치되어 있었지만 Docker CLI 실행 경로가 Windows PATH 환경 변수에 등록되지 않았을 가능성이 있다고 판단했습니다.
+
+**확인 과정**
+
+1. Docker Desktop에서 `Engine running` 상태를 확인했습니다.
+2. 설치 폴더의 `resources/bin`에서 `docker.exe` 파일을 확인했습니다.
+3. 실행 파일의 전체 경로를 사용해 Docker 버전이 정상적으로 출력되는지 확인했습니다.
+
+**해결 방법**
+
+Docker 실행 폴더를 Windows 사용자 PATH 환경 변수에 추가했습니다.
+
+```text
+%LOCALAPPDATA%\Programs\DockerDesktop\resources\bin
+```
+
+VS Code를 종료하고 다시 실행한 후 다음 명령어로 확인했습니다.
+
+```powershell
+docker --version
+```
+
+**실제 확인 결과**
+
+```text
+Docker version 29.9.3, build 5457199
+```
+
+**배운 점**
+
+프로그램이 설치되어 있어도 실행 파일의 경로가 PATH에 등록되지 않으면 터미널에서 명령어를 인식하지 못할 수 있다는 점을 배웠습니다.
+
+### 2. Docker 볼륨 데이터 확인 중 명령어 오류 해결
+
+**문제**
+
+WSL Ubuntu 터미널에서 Docker 볼륨에 저장된 파일을 확인하려고 다음 명령어를 실행했습니다.
+
+```bash
+docker run --rm -v panda-study-data:/data ubuntu:latest cat/data/hello.txt
+```
+
+그러나 다음 오류가 발생했습니다.
+
+```text
+exec: "cat/data/hello.txt": stat cat/data/hello.txt: no such file or directory
+```
+
+**원인 가설**
+
+`cat` 명령어와 `/data/hello.txt` 파일 경로 사이에 공백이 빠져서 Docker가 전체 문자열을 하나의 실행 파일 이름으로 해석한 것으로 판단했습니다.
+
+**확인 과정**
+
+1. 오류 메시지에서 `cat/data/hello.txt`라는 문자열을 확인했습니다.
+2. `cat`과 파일 경로 사이에 공백이 없는 것을 발견했습니다.
+3. 공백을 추가한 명령어로 다시 실행했습니다.
+
+**해결 방법**
+
+다음과 같이 명령어와 파일 경로를 구분했습니다.
+
+```bash
+docker run --rm -v panda-study-data:/data ubuntu:latest cat /data/hello.txt
+```
+
+**실제 확인 결과**
+
+```text
+Hello Pink Panda Volume!
+```
+
+**배운 점**
+
+터미널에서는 명령어와 인수 사이의 공백이 중요하다는 점을 배웠습니다. 또한 Docker 볼륨에 저장된 파일을 다른 임시 컨테이너에서 읽어 데이터가 유지되는지 확인할 수 있었습니다.
