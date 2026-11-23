@@ -230,3 +230,9 @@ git push origin main
 [🐼 핑크판다 개발자 작업실 웹페이지 바로가기](https://jinsoon41088-coder.github.io/pink-panda-dev-workspace/)
 
 이 미션에서는 Linux 명령어, Docker, Git, GitHub를 활용하여 개발 환경을 구성하는 방법을 학습했습니다.
+
+## 🐼 핑크판다 미션 설명 웹페이지
+
+동료평가 발표를 위해 개발자 작업실 미션의 6가지 학습 목표와 실습 내용을 웹페이지로 정리했습니다.
+
+👉 [핑크판다 미션 설명 웹페이지 바로가기](https://jinsoon41088-coder.github.io/pink-panda-dev-workspace/mission-guide.html)
