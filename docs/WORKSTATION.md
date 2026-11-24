@@ -269,3 +269,198 @@ Docker Client와 Server 버전, 컨테이너 상태 및 실행 환경을 확인�
 ![Docker 엔진 정보 3](../screenshots/docker-engine-3.png)
 
 ![Docker 엔진 정보 4](../screenshots/docker-engine-4.png)
+
+
+---
+
+## 추가 실습: WSL2 Ubuntu Linux 기본 명령어
+
+### 1. 실습 환경
+
+- 실습 날짜: 2026년 11월 24일
+- 운영체제: Ubuntu 26.04.1 LTS
+- 코드명: Resolute Raccoon
+- 실습 환경: WSL2 및 VS Code 터미널
+
+### 2. Ubuntu 설치 및 버전 확인
+
+```powershell
+wsl --install -d Ubuntu-26.04
+```
+
+```bash
+cat /etc/os-release
+```
+
+실제 실행 결과:
+
+```text
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION_CODENAME=resolute
+```
+
+### 3. Linux 기본 명령어 실습
+
+| 명령어 | 기능 | 실습 결과 |
+|---|---|---|
+| pwd | 현재 작업 경로 확인 | 성공 |
+| ls -la | 숨김 파일 포함 목록 확인 | 성공 |
+| cd | 디렉터리 이동 | 성공 |
+| mkdir | 디렉터리 생성 | 성공 |
+| touch | 빈 파일 생성 | 성공 |
+| echo | 파일 내용 작성 | 성공 |
+| cat | 파일 내용 읽기 | 성공 |
+| cp | 파일 복사 | 성공 |
+| mv | 파일 이름 변경 및 이동 | 성공 |
+| rm | 파일 삭제 | 성공 |
+| chmod | 파일 및 디렉터리 권한 변경 | 성공 |
+
+### 4. 파일 생성 및 내용 확인
+
+```bash
+cd ~
+mkdir -p pink-panda-linux-practice
+cd pink-panda-linux-practice
+touch hello.txt
+echo "Hello Pink Panda Linux!" > hello.txt
+cat hello.txt
+```
+
+실제 출력 결과:
+
+```text
+Hello Pink Panda Linux!
+```
+
+### 5. 파일 권한 변경 및 복원
+
+변경 전:
+
+```bash
+ls -l hello.txt
+```
+
+```text
+-rw-r--r-- 1 REDACTED REDACTED 0 Nov 24 14:24 hello.txt
+```
+
+권한 변경:
+
+```bash
+chmod 755 hello.txt
+ls -l hello.txt
+```
+
+실제 출력 결과:
+
+```text
+-rwxr-xr-x 1 REDACTED REDACTED 0 Nov 24 14:24 hello.txt
+```
+
+권한 복원:
+
+```bash
+chmod 644 hello.txt
+ls -l hello.txt
+```
+
+실제 출력 결과:
+
+```text
+-rw-r--r-- 1 REDACTED REDACTED 24 Nov 24 14:28 hello.txt
+```
+
+파일 권한을 644에서 755로 변경한 후 다시 644로 복원하였다.
+
+### 6. 디렉터리 권한 변경
+
+```bash
+mkdir permission-test
+ls -ld permission-test
+```
+
+변경 전:
+
+```text
+drwxr-xr-x 2 REDACTED REDACTED 4096 Nov 24 14:26 permission-test
+```
+
+```bash
+chmod 700 permission-test
+ls -ld permission-test
+```
+
+변경 후:
+
+```text
+drwx------ 2 REDACTED REDACTED 4096 Nov 24 14:26 permission-test
+```
+
+디렉터리 권한을 755에서 700으로 변경하여 소유자만 접근할 수 있도록 설정하였다.
+
+### 7. 파일 복사, 이동 및 삭제
+
+```bash
+cp hello.txt hello-copy.txt
+mv hello-copy.txt hello-renamed.txt
+mv hello-renamed.txt permission-test/
+ls -l permission-test/
+rm permission-test/hello-renamed.txt
+ls -la permission-test/
+```
+
+삭제 후 실제 출력 결과:
+
+```text
+total 8
+drwx------ 2 REDACTED REDACTED 4096 Nov 24 14:41 .
+drwxr-xr-x 3 REDACTED REDACTED 4096 Nov 24 14:40 ..
+```
+
+원본 hello.txt는 정상적으로 유지되었으며 실습용 복사본만 삭제하였다.
+
+### 8. 트러블슈팅
+
+#### 오류 1. Ubuntu 배포판 이름 오타
+
+- 문제: WSL_E_DISTRO_NOT_FOUND 오류 발생
+- 가설: Ubuntu 배포판 이름을 잘못 입력했을 가능성
+- 확인: Ubntu-26.04로 입력한 것을 확인
+- 해결: Ubuntu-26.04로 수정하여 설치 성공
+
+#### 오류 2. 파일 이름 오타
+
+- 문제: No such file or directory 오류 발생
+- 가설: 파일 이름이 정확하지 않을 가능성
+- 확인: hello.txt 대신 hellotxt로 입력
+- 해결: 정확한 파일 이름으로 명령어를 다시 실행하여 성공
+
+#### 오류 3. 파일 이름 변경 후 재실행
+
+- 문제: mv 명령어 실행 시 cannot stat 오류 발생
+- 가설: 파일 이름이 이미 변경되었을 가능성
+- 확인: ls -la 명령어로 hello-renamed.txt 존재 확인
+- 해결: 변경된 파일 이름을 사용하여 이후 실습 진행
+
+### 9. 보안 및 학습 결과
+
+- r은 읽기, w는 쓰기, x는 실행 또는 디렉터리 접근 권한을 의미한다.
+- 권한 숫자는 r=4, w=2, x=1의 합으로 계산한다.
+- 일반 텍스트 파일은 불필요한 실행 권한을 제거하여 644로 복원하였다.
+- 최소 권한의 원칙을 적용하였다.
+- 개인정보 보호를 위해 실제 출력 결과의 사용자 계정 이름을 REDACTED로 가렸다.
+
+### 10. 실습 완료 체크리스트
+
+- [x] WSL2 Ubuntu 설치
+- [x] Ubuntu 버전 확인
+- [x] Linux 기본 명령어 실습
+- [x] 절대 경로 및 상대 경로 실습
+- [x] 파일 권한 변경 전후 검증
+- [x] 디렉터리 권한 변경 전후 검증
+- [x] 파일 복사 및 이동
+- [x] 파일 삭제 및 원본 유지 확인
+- [x] 오류 원인 분석 및 해결
+- [x] 최소 권한의 원칙 적용
