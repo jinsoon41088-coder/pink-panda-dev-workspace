@@ -80,3 +80,7 @@ Docker, Linux, Git, GitHub의 기본 개념을
 ### 4. VS Code GitHub 로그인 확인
 
 ![VS Code GitHub 로그인](screenshots/vscode-github.png)
+
+## 🐼 개발자 작업실 미션 한눈에 보기
+
+![핑크판다 개발자 작업실 설명](screenshots/귀여운%20개발자%20작업실%20꾸미기%20인포그래픽.png)
