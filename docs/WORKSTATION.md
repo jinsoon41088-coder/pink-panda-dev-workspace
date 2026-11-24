@@ -464,3 +464,353 @@ drwxr-xr-x 3 REDACTED REDACTED 4096 Nov 24 14:40 ..
 - [x] 파일 삭제 및 원본 유지 확인
 - [x] 오류 원인 분석 및 해결
 - [x] 최소 권한의 원칙 적용
+
+## 추가 실습: Docker attach와 exec 비교
+
+- 실습 날짜: 2026년 11월 24일
+- 실습 장소: 경남대학교
+- 실습 환경: Windows PowerShell, VS Code, Docker Desktop
+
+### 1. 실습 목적
+
+- Docker Client와 Server의 정상 작동을 확인한다.
+- Ubuntu 이미지를 다운로드하고 컨테이너를 생성한다.
+- docker attach와 docker exec의 차이를 이해한다.
+- 컨테이너의 실행 상태를 확인한다.
+- Docker 접근 권한 오류의 원인과 대응 방법을 이해한다.
+
+### 2. Docker 실행 환경 확인
+
+실행 명령어:
+
+```powershell
+docker version
+```
+
+실제 출력 결과 중 주요 정보:
+
+```text
+Client:
+ Version: 29.9.3
+ API version: 1.56
+ OS/Arch: windows/amd64
+ Context: desktop-linux
+
+Server: Docker Desktop 4.99.0 (245822)
+ Engine:
+  Version: 29.9.3
+  API version: 1.56
+  OS/Arch: linux/amd64
+```
+
+Client와 Server 정보가 모두 출력되어 Docker가 정상적으로 작동하는 것을 확인하였다.
+
+### 3. 기존 컨테이너 확인
+
+```powershell
+docker ps -a
+```
+
+실제 출력 결과:
+
+```text
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+기존 컨테이너가 없는 상태임을 확인하였다.
+
+### 4. Ubuntu 이미지 다운로드 및 컨테이너 생성
+
+```powershell
+docker run -dit --name pink-panda-attach-lab ubuntu:latest bash
+```
+
+실제 출력 결과:
+
+```text
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+96aae9022e0e: Pull complete
+517b871c26ea: Pull complete
+e211d985152c: Download complete
+Status: Downloaded newer image for ubuntu:latest
+d6587b07b0c18e5238cd052d91e62fdf4affd2a8b25827536d0a3b58360da457
+```
+
+Ubuntu 이미지가 로컬에 없었기 때문에 Docker가 자동으로 다운로드하였다.
+
+옵션의 의미:
+
+| 옵션 | 의미 |
+| --- | --- |
+| -d | 백그라운드 실행 |
+| -i | 표준 입력 유지 |
+| -t | 가상 터미널 할당 |
+| --name | 컨테이너 이름 지정 |
+
+### 5. 컨테이너 실행 상태 확인
+
+```powershell
+docker ps
+```
+
+실제 출력 결과:
+
+```text
+CONTAINER ID   IMAGE           COMMAND   CREATED          STATUS          PORTS     NAMES
+d6587b07b0c1   ubuntu:latest   "bash"    23 seconds ago   Up 22 seconds             pink-panda-attach-lab
+```
+
+STATUS에 Up이 표시되어 컨테이너가 정상적으로 실행 중임을 확인하였다.
+
+### 6. Docker attach 실습
+
+```powershell
+docker attach pink-panda-attach-lab
+```
+
+실제 접속 결과:
+
+```text
+root@d6587b07b0c1:/#
+```
+
+컨테이너 내부에서 실행한 명령어:
+
+```bash
+echo "Hello Pink Panda Attach!"
+```
+
+실제 출력 결과:
+
+```text
+Hello Pink Panda Attach!
+```
+
+docker attach는 실행 중인 컨테이너의 기존 메인 프로세스에 연결하는 명령어이다.
+
+### 7. 컨테이너 연결 해제 방법
+
+Docker attach의 기본 연결 해제 단축키는 다음과 같다.
+
+- Ctrl + P
+- Ctrl + Q
+
+두 단축키를 순서대로 누르면 컨테이너를 종료하지 않고 연결만 해제할 수 있다.
+
+이번 실습에서는 VS Code 터미널에서 해당 단축키가 정상적으로 작동하지 않았다.
+
+따라서 기존 터미널을 유지하고 새로운 PowerShell 터미널을 열어 다음 실습을 진행하였다.
+
+```powershell
+docker ps
+```
+
+실제 출력 결과:
+
+```text
+CONTAINER ID   IMAGE           COMMAND   CREATED         STATUS         PORTS     NAMES
+d6587b07b0c1   ubuntu:latest   "bash"    4 minutes ago   Up 4 minutes             pink-panda-attach-lab
+```
+
+컨테이너가 계속 실행되고 있음을 확인하였다.
+
+### 8. Docker exec 실습
+
+새로운 PowerShell 터미널에서 실행하였다.
+
+```powershell
+docker exec -it pink-panda-attach-lab bash
+```
+
+실제 접속 결과:
+
+```text
+root@d6587b07b0c1:/#
+```
+
+컨테이너 내부에서 실행한 명령어:
+
+```bash
+echo "Hello Pink Panda Exec!"
+```
+
+실제 출력 결과:
+
+```text
+Hello Pink Panda Exec!
+```
+
+docker exec는 실행 중인 컨테이너 내부에서 새로운 프로세스를 실행하는 명령어이다.
+
+### 9. exec 환경 종료
+
+```bash
+exit
+```
+
+PowerShell로 정상적으로 돌아왔다.
+
+이후 컨테이너의 실행 상태를 다시 확인하였다.
+
+```powershell
+docker ps
+```
+
+실제 출력 결과:
+
+```text
+CONTAINER ID   IMAGE           COMMAND   CREATED         STATUS         PORTS     NAMES
+d6587b07b0c1   ubuntu:latest   "bash"    5 minutes ago   Up 5 minutes             pink-panda-attach-lab
+```
+
+exec로 실행한 bash를 종료해도 기존 컨테이너는 계속 실행되고 있음을 확인하였다.
+
+### 10. Docker attach와 exec 비교
+
+| 구분 | docker attach | docker exec |
+| --- | --- | --- |
+| 연결 대상 | 기존 메인 프로세스 | 새로운 프로세스 |
+| 프로세스 추가 생성 | 하지 않음 | 생성함 |
+| 이번 실습에서 exit 실행 시 | 메인 bash와 컨테이너 종료 | 새 bash만 종료 |
+| 주요 목적 | 기존 프로세스 연결 | 추가 작업 및 점검 |
+
+쉽게 설명하면 attach는 기존 작업 환경에 연결하는 것이고, exec는 실행 중인 컨테이너 내부에 새로운 작업 환경을 만드는 것이다.
+
+### 11. 트러블슈팅: WSL2 Docker 접근 권한 오류
+
+#### 문제
+
+Ubuntu 터미널에서 다음 명령어를 실행하였다.
+
+```bash
+docker version
+```
+
+발생한 오류:
+
+```text
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+```
+
+#### 원인 가설
+
+현재 Ubuntu 사용자에게 Docker 소켓 접근 권한이 없을 것으로 판단하였다.
+
+#### 확인 과정
+
+```bash
+groups
+```
+
+출력 결과:
+
+```text
+[USERNAME] adm cdrom sudo dip plugdev users
+```
+
+현재 사용자 그룹에 docker 그룹이 포함되어 있지 않았다.
+
+```bash
+ls -lL /var/run/docker.sock
+```
+
+실제 출력 결과:
+
+```text
+srw-rw---- 1 root docker 0 Nov 24 15:29 /var/run/docker.sock
+```
+
+Docker 소켓의 소유자는 root이고 소유 그룹은 docker임을 확인하였다.
+
+#### 대응 방법
+
+Docker 그룹에 사용자를 추가하는 방법을 검토하였다.
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+하지만 관리자 비밀번호를 확인할 수 없어 권한 변경 절차를 중단하였다.
+
+학교 컴퓨터의 보안을 고려하여 관리자 권한을 강제로 변경하지 않았다.
+
+대신 Windows PowerShell로 전환하여 Docker Client와 Server의 정상 작동을 확인하고 나머지 실습을 진행하였다.
+
+Ubuntu의 접근 권한 문제는 해결되지 않은 상태이며, PowerShell을 이용하여 실습을 완료하였다.
+
+### 12. 트러블슈팅: Docker 명령어 오타
+
+#### 문제
+
+```bash
+docker uersion
+```
+
+발생한 오류:
+
+```text
+docker: unknown command: docker uersion
+```
+
+#### 원인
+
+version의 첫 글자인 v를 u로 잘못 입력하였다.
+
+#### 해결 방법
+
+```bash
+docker version
+```
+
+정확한 명령어로 수정하여 Docker Client 정보를 확인하였다.
+
+### 13. 트러블슈팅: attach 연결 해제 단축키 문제
+
+#### 문제
+
+VS Code 터미널에서 Ctrl + P, Ctrl + Q 단축키가 작동하지 않았다.
+
+#### 원인 가설
+
+VS Code 자체 단축키와 Docker 연결 해제 단축키가 충돌했을 가능성이 있다.
+
+#### 대응 방법
+
+기존 attach 터미널을 유지한 상태에서 새로운 PowerShell 터미널을 열었다.
+
+docker ps 명령어로 컨테이너 실행 상태를 확인하고 docker exec 실습을 진행하였다.
+
+#### 결과
+
+컨테이너를 종료하지 않고 나머지 실습을 완료하였다.
+
+### 14. 보안 및 주의 사항
+
+- 관리자 비밀번호를 문서에 기록하지 않는다.
+- 개인 사용자 정보는 필요한 경우 마스킹한다.
+- 학교 컴퓨터의 권한을 임의로 변경하지 않는다.
+- Docker 그룹이 강력한 시스템 권한을 가질 수 있음을 이해한다.
+- 기존 컨테이너를 함부로 삭제하지 않는다.
+
+### 15. 학습 결과 체크리스트
+
+- [x] Docker Desktop 버전 확인
+- [x] Docker Client 및 Server 버전 확인
+- [x] 기존 컨테이너 확인
+- [x] Ubuntu 이미지 다운로드
+- [x] Ubuntu 컨테이너 생성
+- [x] 컨테이너 실행 상태 확인
+- [x] Docker attach 접속
+- [x] attach 내부 명령어 실행
+- [x] Docker exec 접속
+- [x] exec 내부 명령어 실행
+- [x] exec 환경 종료
+- [x] 컨테이너 실행 유지 확인
+- [x] attach와 exec 차이 이해
+- [x] Docker 접근 권한 오류 원인 확인
+- [x] PowerShell을 이용한 대체 실습
+- [x] 트러블슈팅 과정 기록
+- [x] 보안 및 권한 관리 원칙 이해
+- [ ] attach 기본 단축키를 이용한 연결 해제 성공
+- [ ] WSL2 Docker 접근 권한 문제 해결
