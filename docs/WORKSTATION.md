@@ -814,3 +814,252 @@ docker ps 명령어로 컨테이너 실행 상태를 확인하고 docker exec �
 - [x] 보안 및 권한 관리 원칙 이해
 - [ ] attach 기본 단축키를 이용한 연결 해제 성공
 - [ ] WSL2 Docker 접근 권한 문제 해결
+
+---
+
+## 추가 실습: Git 사용자 설정 및 개인정보 보호
+
+- 실습 날짜: 2026년 11월 24일
+- 실습 장소: 경남대학교
+- 실습 환경: Windows PowerShell, VS Code
+- 프로젝트: pink-panda-dev-workspace
+
+### 1. 실습 목적
+
+- Git 사용자 이름과 이메일 설정을 확인한다.
+- 기본 브랜치 설정과 현재 브랜치의 차이를 이해한다.
+- Git 전체 설정 목록을 확인한다.
+- 개인정보와 인증 정보를 안전하게 보호한다.
+- Git 로컬 설정과 전역 설정의 차이를 이해한다.
+
+### 2. Git 사용자 이름 확인
+
+실행 명령어:
+
+```powershell
+git config --get user.name
+```
+
+실제 출력 결과:
+
+```text
+pink_panda
+```
+
+Git 사용자 이름은 커밋을 작성한 사람이 누구인지
+기록하기 위해 사용한다.
+
+### 3. Git 이메일 설정 확인
+
+실행 명령어:
+
+```powershell
+git config --get user.email
+```
+
+실제 출력 결과 (개인정보 마스킹):
+
+```text
+[REDACTED]@users.noreply.github.com
+```
+
+GitHub에서 제공하는 noreply 이메일을 사용하여
+개인 이메일 주소가 커밋에 공개되지 않도록 설정하였다.
+
+### 4. 기존 기본 브랜치 설정 확인
+
+실행 명령어:
+
+```powershell
+git config --get init.defaultBranch
+```
+
+실제 출력 결과:
+
+```text
+master
+```
+
+기존 기본 브랜치 설정은 master였다.
+
+현재 프로젝트에서 사용 중인 브랜치는 main이다.
+
+기본 브랜치 설정과 현재 브랜치는 서로 다른 개념이다.
+
+### 5. 로컬 기본 브랜치 설정 변경
+
+실행 명령어:
+
+```powershell
+git config --local init.defaultBranch main
+```
+
+실행 결과:
+
+- 오류 없이 PowerShell 입력창으로 돌아왔다.
+- 현재 저장소의 로컬 설정값을 변경하였다.
+- 기존 파일과 커밋은 변경하지 않았다.
+- 다른 저장소의 설정에는 영향을 주지 않았다.
+
+### 6. 변경된 설정 확인
+
+실행 명령어:
+
+```powershell
+git config --get init.defaultBranch
+```
+
+실제 출력 결과:
+
+```text
+main
+```
+
+현재 저장소에서 조회되는 기본 브랜치 설정값이
+main으로 변경된 것을 확인하였다.
+
+이 설정은 현재 브랜치의 이름을 변경하는 명령이 아니며,
+다른 신규 저장소의 전역 기본값도 변경하지 않는다.
+
+### 7. Git 전체 설정 확인
+
+실행 명령어:
+
+```powershell
+git config --list
+```
+
+Git 사용자 정보, 브랜치, 원격 저장소,
+인증 관련 설정 등을 확인하였다.
+
+출력 화면에서 q 키를 눌러 PowerShell로 돌아왔다.
+
+### 8. 개인정보 마스킹
+
+개인정보와 인증 정보가 공개되지 않도록
+허용된 설정값만 표시하고 나머지는 마스킹하였다.
+
+실행 명령어:
+
+```powershell
+git -P config --list | ForEach-Object { if ($_ -match '^(init\.defaultbranch=(main|master)|core\.(autocrlf|filemode|bare)=(true|false)|branch\.main\.remote=origin|branch\.main\.merge=refs/heads/main)$') { $_ } else { ($_ -split '=',2)[0] + '=[REDACTED]' } }
+```
+
+실제 출력 결과:
+
+```text
+diff.astextplain.textconv=[REDACTED]
+filter.lfs.clean=[REDACTED]
+filter.lfs.smudge=[REDACTED]
+filter.lfs.process=[REDACTED]
+filter.lfs.required=[REDACTED]
+http.sslbackend=[REDACTED]
+core.autocrlf=true
+core.fscache=[REDACTED]
+core.symlinks=[REDACTED]
+pull.rebase=[REDACTED]
+credential.helper=[REDACTED]
+credential.https://dev.azure.com.usehttppath=[REDACTED]
+init.defaultbranch=master
+user.name=[REDACTED]
+core.repositoryformatversion=[REDACTED]
+core.filemode=false
+core.bare=false
+core.logallrefupdates=[REDACTED]
+core.symlinks=[REDACTED]
+core.ignorecase=[REDACTED]
+remote.origin.url=[REDACTED]
+remote.origin.fetch=[REDACTED]
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+branch.main.vscode-merge-base=[REDACTED]
+user.name=[REDACTED]
+user.email=[REDACTED]
+credential.helper=[REDACTED]
+init.defaultbranch=main
+```
+
+REDACTED는 중요한 정보가 가려졌다는 의미이다.
+
+### 9. 주요 Git 설정의 의미
+
+| 설정 항목 | 의미 |
+| --- | --- |
+| user.name | 커밋 작성자 이름 |
+| user.email | 커밋 작성자 이메일 |
+| init.defaultBranch | 저장소 초기 브랜치 이름 설정 |
+| core.autocrlf | 운영체제 간 줄바꿈 처리 설정 |
+| core.filemode | 파일 실행 권한 변경 추적 여부 |
+| core.bare | 작업 디렉터리가 없는 저장소인지 여부 |
+| remote.origin.url | 원격 저장소 주소 |
+| branch.main.remote | main 브랜치가 연결된 원격 저장소 |
+| branch.main.merge | 추적하는 원격 브랜치의 참조 |
+| credential.helper | Git 인증 정보 관리 도구 |
+
+### 10. Git 설정 범위의 차이
+
+| 설정 범위 | 적용 대상 |
+| --- | --- |
+| --system | 컴퓨터의 시스템 수준 Git 설정 |
+| --global | 현재 사용자의 Git 설정 |
+| --local | 현재 Git 저장소의 설정 |
+
+일반적으로 동일한 설정이 여러 범위에 존재하면
+로컬 설정이 전역 및 시스템 설정보다 우선한다.
+
+학교 컴퓨터이므로 다른 프로젝트에 영향을 주지 않도록
+현재 저장소의 로컬 설정을 사용하였다.
+
+### 11. 트러블슈팅: 개인정보 마스킹 문제
+
+#### 문제
+
+첫 번째 마스킹 과정에서 한글 사용자 이름이 깨지고
+개인 이메일 주소가 같은 출력 줄에 나타났다.
+
+#### 원인 가설
+
+문자 인코딩 또는 출력 줄 처리 문제로 인해
+사용자 이름과 이메일 정보가 같은 줄에 포함되었을
+가능성이 있다고 판단하였다.
+
+#### 확인 과정
+
+- Git 전체 설정 목록을 확인하였다.
+- 마스킹된 출력 결과를 검토하였다.
+- 일부 개인정보가 가려지지 않은 것을 발견하였다.
+
+#### 해결 방법
+
+- 사용자 이름을 포함한 민감한 설정값을 가렸다.
+- 안전한 설정 항목과 값만 허용하도록 조건을 변경하였다.
+- 마스킹 명령어를 다시 실행하였다.
+- 출력 결과에 개인 이메일 주소가 없는 것을 확인하였다.
+
+#### 해결 결과
+
+개인정보가 가려진 Git 설정 목록을 확보하였다.
+
+### 12. 보안 및 주의 사항
+
+- 개인 이메일 주소를 공개 문서에 기록하지 않는다.
+- GitHub noreply 이메일을 활용한다.
+- 비밀번호와 API 토큰을 GitHub에 업로드하지 않는다.
+- 인증 관련 설정값은 필요한 경우 마스킹한다.
+- 학교 컴퓨터의 전역 설정을 임의로 변경하지 않는다.
+- Git 설정 출력 결과를 공개하기 전에 직접 검토한다.
+
+### 13. 학습 결과 체크리스트
+
+- [x] Git 사용자 이름 확인
+- [x] Git 이메일 설정 확인
+- [x] GitHub noreply 이메일 사용 확인
+- [x] 기존 기본 브랜치 설정 확인
+- [x] 로컬 기본 브랜치 설정 변경
+- [x] 변경된 설정값 확인
+- [x] Git 전체 설정 목록 확인
+- [x] 개인정보 마스킹
+- [x] 마스킹 문제 해결
+- [x] Git 설정 범위의 차이 이해
+- [x] 보안 및 개인정보 보호 원칙 이해
+- [x] Git 설정 실습 과정 문서화
