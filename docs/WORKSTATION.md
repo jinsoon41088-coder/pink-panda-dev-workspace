@@ -1063,3 +1063,26 @@ REDACTED는 중요한 정보가 가려졌다는 의미이다.
 - [x] Git 설정 범위의 차이 이해
 - [x] 보안 및 개인정보 보호 원칙 이해
 - [x] Git 설정 실습 과정 문서화
+
+## 14. pink-panda-build-lab Docker 실습 기록
+
+### 14-1. Docker 이미지 빌드
+
+- 실습 날짜: 2026년 11월 24일
+- 작업 환경: Windows 11, VS Code, Docker Desktop
+- Docker 버전: 29.9.2
+- 이미지 이름: `workstation-web:2.0`
+- 빌드 명령어: `docker build --progress=plain -t workstation-web:2.0 ./web-demo`
+- 이미지 ID: `7c2b06b8641c`
+- 실행 결과: Docker 이미지 빌드 성공
+
+### 14-2. Docker 컨테이너 실행 및 웹페이지 확인
+
+- 컨테이너 이름: `pink-panda-new`
+- 사용 이미지: `workstation-web:2.0`
+- 실행 명령어: `docker run -d --name pink-panda-new -p 8085:80 workstation-web:2.0`
+- 포트 매핑: `8085:80`
+- 접속 주소: http://localhost:8085
+- 웹페이지 표시 내용: `HOST VERSION B`
+- 실행 결과: Docker 컨테이너 생성 및 웹페이지 접속 성공
+- 기존 `pink-panda-custom` 컨테이너는 유지함
