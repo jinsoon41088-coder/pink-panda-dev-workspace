@@ -1,4 +1,4 @@
-# pink-panda-dev-workspace
+﻿# pink-panda-dev-workspace
 
 ## 내 컴퓨터에 개발자용 '작업실' 꾸미기
 
@@ -10,6 +10,9 @@
 이 프로젝트는 개발자용 작업실을 직접 구축하고
 기본 개발 도구를 익히기 위한 학습 프로젝트입니다.
 
+## 🐼 개발자 작업실 미션 한눈에 보기
+
+<img src="screenshots/귀여운%20개발자%20작업실%20꾸미기%20인포그래픽.png" width="100%" alt="핑크판다 개발자 작업실 설명">
 ## 💻 개발 환경
 
 | 구분 | 사용 환경 및 버전 |
@@ -92,6 +95,7 @@ Docker, Linux, Git, GitHub의 기본 개념을
 ### 4. VS Code GitHub 로그인 확인
 
 ![VS Code GitHub 로그인](screenshots/vscode-github.png)
+
 
 ## 🐼 미션 목표 6가지 설명
 
