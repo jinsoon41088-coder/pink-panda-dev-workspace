@@ -382,3 +382,169 @@ Hello Pink Panda Volume!
 **배운 점**
 
 터미널에서는 명령어와 인수 사이의 공백이 중요하다는 점을 배웠습니다. 또한 Docker 볼륨에 저장된 파일을 다른 임시 컨테이너에서 읽어 데이터가 유지되는지 확인할 수 있었습니다.
+## 🐳 Docker 포트 매핑 추가 실습
+
+- 실습 날짜: 2026년 11월 25일
+- 실습 장소: 경남대학교
+- 사용 이미지: workstation-web:2.0
+- Docker Server: 29.9.3
+- NGINX: 1.31.10
+
+### 1. 포트 매핑 실습 목적
+
+동일한 Docker 이미지를 사용하여 서로 다른 호스트 포트로
+두 개의 웹 서버 컨테이너를 동시에 실행하고 접속을 검증했습니다.
+
+### 2. 첫 번째 포트 매핑 (8080:80)
+
+실행 명령어:
+
+```powershell
+docker run -d -p 127.0.0.1:8080:80 --name pink-panda-port-8080 workstation-web:2.0
+```
+
+실행 결과:
+
+```text
+6c3235d92abf378bab010de9fa14981e913032f40f07a2941e2ea6ec5da55e04
+```
+
+- 접속 주소: http://localhost:8080
+- 웹페이지 출력: HOST VERSION B
+- 접속 결과: 성공
+
+![8080번 포트 접속 성공](screenshots/port-mapping-8080.png)
+
+### 3. 두 번째 포트 매핑 (8081:80)
+
+실행 명령어:
+
+```powershell
+docker run -d -p 127.0.0.1:8081:80 --name pink-panda-port-8081 workstation-web:2.0
+```
+
+실행 결과:
+
+```text
+35377da32d9f0f5163f28d6f933b3a7a00b22b0118e552349f79bec4f5b6d4a1
+```
+
+- 접속 주소: http://localhost:8081
+- 웹페이지 출력: HOST VERSION B
+- 접속 결과: 성공
+
+![8081번 포트 접속 성공](screenshots/port-mapping-8081.png)
+
+### 4. 두 컨테이너 동시 실행 확인
+
+검증 명령어:
+
+```powershell
+docker ps
+```
+
+실제 실행 결과 요약:
+
+```text
+NAMES                  STATUS   PORTS
+pink-panda-port-8080   Up       127.0.0.1:8080->80/tcp
+pink-panda-port-8081   Up       127.0.0.1:8081->80/tcp
+```
+
+![두 컨테이너 동시 실행](screenshots/port-mapping-containers.png)
+
+### 5. Docker 운영 로그 검증
+
+검증 명령어:
+
+```powershell
+docker logs pink-panda-port-8080
+docker logs pink-panda-port-8081
+```
+
+두 컨테이너 모두 다음 HTTP 응답을 확인했습니다.
+
+```text
+GET / HTTP/1.1" 200
+```
+
+HTTP 200은 웹 서버가 요청을 정상적으로 처리했다는 의미입니다.
+
+favicon.ico 요청에 대한 404 응답도 확인했지만,
+브라우저 탭 아이콘 파일이 없는 것으로 웹페이지 접속에는
+문제가 없었습니다.
+
+![8080번 운영 로그](screenshots/port-mapping-logs-8080.png)
+
+![8081번 운영 로그](screenshots/port-mapping-logs-8081.png)
+
+### 6. 포트 매핑 최종 검증 결과
+
+| 검증 항목 | 첫 번째 컨테이너 | 두 번째 컨테이너 |
+|---|---|---|
+| Docker 이미지 | workstation-web:2.0 | workstation-web:2.0 |
+| 호스트 포트 | 8080 | 8081 |
+| 컨테이너 포트 | 80 | 80 |
+| 브라우저 접속 | 성공 | 성공 |
+| HTTP 응답 | 200 | 200 |
+| 동시 실행 | 성공 | 성공 |
+
+### 7. 추가 트러블슈팅: Docker 엔진 연결 오류
+
+**문제**
+
+docker info 실행 시 Docker API 연결 오류가 발생했습니다.
+
+```text
+failed to connect to the docker API
+The system cannot find the file specified.
+```
+
+**원인 가설**
+
+Docker Desktop 엔진이 실행되지 않았거나
+Docker 엔진 연결이 준비되지 않은 상태로 판단했습니다.
+
+**확인 과정**
+
+Docker Desktop을 실행하고 Engine running 상태를 확인했습니다.
+
+**해결 방법**
+
+PowerShell에서 docker info 명령어를 다시 실행했습니다.
+
+**실제 확인 결과**
+
+```text
+Server Version: 29.9.3
+Operating System: Docker Desktop
+OSType: linux
+```
+
+Docker 서버 정보가 정상적으로 출력되었습니다.
+
+### 8. 포트 매핑을 통해 배운 점
+
+포트 매핑은 호스트 컴퓨터의 포트와 컨테이너 내부의
+포트를 연결하여 웹 서버에 접속할 수 있도록 하는 기능입니다.
+
+동일한 Docker 이미지를 사용하더라도 호스트 포트를
+다르게 지정하면 여러 컨테이너를 동시에 실행할 수 있습니다.
+
+127.0.0.1을 지정하여 현재 컴퓨터에서만 접속할 수 있도록
+포트를 설정했습니다.
+
+### 9. 추가 실습 체크리스트
+
+- [x] 8080번 포트 매핑 실행
+- [x] 8080번 브라우저 접속 검증
+- [x] 8081번 포트 매핑 실행
+- [x] 8081번 브라우저 접속 검증
+- [x] 두 컨테이너 동시 실행 확인
+- [x] Docker 운영 로그 확인
+- [x] HTTP 200 응답 확인
+- [x] 스크린샷 5개 저장
+- [x] Docker 엔진 연결 오류 해결
+
+🐼 Pink Panda Port Mapping Lab
+
